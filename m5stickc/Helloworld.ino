@@ -7,5 +7,5 @@ void setup() {
     M5.Lcd.print("Hello World");
 }
 
-void loop{
+void loop(){
 }
