@@ -26,7 +26,7 @@ void loop() {
   M5.MPU6886.getAccelData(&accX_g,&accY_g,&accZ_g);
   M5.MPU6886.getGyroData(&GyroX,&GyroY,&GyroZ);
   M5.Lcd.setCursor(0, 30);
-  M5.Lcd.printf("Acc : %.2f  %.2f  %.2f   ", accX_g, accY_g, accZ_g);
+  M5.Lcd.printf("Acc : %.2f  %.2f  %.2f   ", accX_g * 9.8, (float)accY_g * 9.8, (float)accZ_g * 9.8);
   M5.Lcd.printf("Gyro : %.2f  %.2f  %.2f   ", GyroX, GyroY, GyroZ);
   delay(100);
 }
