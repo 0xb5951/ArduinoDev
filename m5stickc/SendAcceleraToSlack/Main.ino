@@ -16,10 +16,6 @@ float GyroX = 0;
 float GyroY = 0;
 float GyroZ = 0;
 
-// Wifiパスワード
-const char* ssid = "xx";
-const char* passwd = "xx";
-
 void wifi_setup() {
   // We start by connecting to a WiFi network
   M5.Lcd.printf("Connecting to %s", ssid);
