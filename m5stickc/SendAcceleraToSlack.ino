@@ -1,4 +1,5 @@
 #include <M5StickC.h>
+#include <WiFi.h>
 
 // 加速度(単位が重力加速度[g])
 float accX_g = 0;
@@ -15,6 +16,25 @@ float GyroX = 0;
 float GyroY = 0;
 float GyroZ = 0;
 
+// Wifiパスワード
+const char* ssid = "xx";
+const char* passwd = "xx";
+
+void wifi_setup() {
+  // We start by connecting to a WiFi network
+  M5.Lcd.printf("Connecting to %s", ssid);
+  WiFi.begin(ssid, passwd);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  M5.Lcd.printf("");
+  M5.Lcd.printf("WiFi connected");
+  M5.Lcd.printf("IP address: ");
+  M5.Lcd.printf(WiFi.localIP());
+}
+
+
 void setup() {
   // Initialize the M5StickC object
   M5.begin();
@@ -22,7 +42,10 @@ void setup() {
   M5.MPU6886.Init();
   // LED初期化   
   pinMode(10, OUTPUT);
-  // LCD display
+  
+  // Wifi初期化
+  wifi_setup();
+
   M5.Lcd.setRotation(1);  // ボタンBが上になる向き
   M5.Lcd.fillScreen(BLACK);
   digitalWrite(10, HIGH);
