@@ -1,5 +1,7 @@
 #include <M5StickC.h>
 #include <WiFi.h>
+#include <Bridge.h>
+#include <HttpClient.h>
 
 // 加速度(単位が重力加速度[g])
 float accX_g = 0;
@@ -47,7 +49,11 @@ void setup() {
   
   // Wifi初期化
   wifi_setup();
-  
+
+  HttpClient client;
+  int httpCode = client.get("http://www.arduino.cc/asciilogo.txt");//GETメソッドで接続
+  M5.Lcd.printf("Res code: %d", client.read());  
+
   digitalWrite(10, HIGH);
 }
 
