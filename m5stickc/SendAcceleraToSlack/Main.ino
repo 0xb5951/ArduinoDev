@@ -16,6 +16,10 @@ float GyroX = 0;
 float GyroY = 0;
 float GyroZ = 0;
 
+// wifi
+const char* ssid = "";
+const char* passwd = "";
+
 void wifi_setup() {
   // We start by connecting to a WiFi network
   M5.Lcd.printf("Connecting to %s", ssid);
@@ -24,10 +28,9 @@ void wifi_setup() {
     delay(500);
     Serial.print(".");
   }
-  M5.Lcd.printf("");
   M5.Lcd.printf("WiFi connected");
   M5.Lcd.printf("IP address: ");
-  M5.Lcd.printf(WiFi.localIP());
+//  M5.Lcd.printf(WiFi.localIP());
 }
 
 
@@ -39,11 +42,12 @@ void setup() {
   // LED初期化   
   pinMode(10, OUTPUT);
   
-  // Wifi初期化
-  wifi_setup();
-
   M5.Lcd.setRotation(1);  // ボタンBが上になる向き
   M5.Lcd.fillScreen(BLACK);
+  
+  // Wifi初期化
+  wifi_setup();
+  
   digitalWrite(10, HIGH);
 }
 
