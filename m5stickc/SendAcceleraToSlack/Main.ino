@@ -1,7 +1,6 @@
 #include <M5StickC.h>
 #include <WiFi.h>
-#include <Bridge.h>
-#include <HttpClient.h>
+#include <HTTPClient.h>
 
 // 加速度(単位が重力加速度[g])
 float accX_g = 0;
@@ -18,21 +17,33 @@ float GyroX = 0;
 float GyroY = 0;
 float GyroZ = 0;
 
-// wifi
-const char* ssid = "";
-const char* passwd = "";
+void send_slack() {
+  const char* slack_bot_token = get_slack_bot_token();
+  const char* oauth_token = get_oauth_token();
+  
+  HTTPClient http;
+  String url = "https://slack.com/api/chat.postMessage";
+
+  http.begin(url);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("Authorization", "Bearer " + String(slack_bot_token));
+  String data = String("{\"token\":") + oauth_token + String(", \"channel\": #t_mizushima, \"text\": M5StickCからの投稿テスト}");
+  unsigned int responseCode = http.POST((uint8_t*)data.c_str();, strlen(data.c_str();));;
+  M5.Lcd.printf("status code: %d", responseCode);
+  String payload = http.getString();
+  M5.Lcd.printf("payload: %s", payload);
+}
 
 void wifi_setup() {
-  // We start by connecting to a WiFi network
-  M5.Lcd.printf("Connecting to %s", ssid);
+  const char* ssid = get_ssid();
+  const char* passwd = get_passwd();
+  M5.Lcd.printf("ssid : %s", ssid);
   WiFi.begin(ssid, passwd);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
   M5.Lcd.printf("WiFi connected");
-  M5.Lcd.printf("IP address: ");
-//  M5.Lcd.printf(WiFi.localIP());
 }
 
 
@@ -50,10 +61,6 @@ void setup() {
   // Wifi初期化
   wifi_setup();
 
-  HttpClient client;
-  int httpCode = client.get("http://www.arduino.cc/asciilogo.txt");//GETメソッドで接続
-  M5.Lcd.printf("Res code: %d", client.read());  
-
   digitalWrite(10, HIGH);
 }
 
@@ -70,6 +77,7 @@ void loop() {
 
   if (abs(accX + accY + accZ) > 19.6) {
     digitalWrite(10, LOW);
+    send_slack();
   }
   delay(500);
 }
