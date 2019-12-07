@@ -18,7 +18,20 @@ float GyroX = 0;
 float GyroY = 0;
 float GyroZ = 0;
 
+// post json
 char buffer[255];
+
+void wifi_setup() {
+  const char* ssid = get_ssid();
+  const char* passwd = get_passwd();
+  M5.Lcd.printf("ssid : %s", ssid);
+  WiFi.begin(ssid, passwd);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  M5.Lcd.printf("WiFi connected");
+}
 
 void send_slack() {
   const char* slack_bot_token = get_slack_bot_token();
@@ -31,7 +44,7 @@ void send_slack() {
   StaticJsonDocument<capacity> json_request;
   json_request["token"] = oauth_token;
   json_request["channel"] = "#t_mizushima";
-  json_request["text"] = "send from m5stick";
+  json_request["text"] = "Now bunbun m5stickC!";
 
   http.begin(url);
   http.addHeader("Content-Type", "application/json");
@@ -41,20 +54,8 @@ void send_slack() {
   unsigned int responseCode = http.POST((uint8_t*)buffer, strlen(buffer));
   String payload = http.getString();
 
-  M5.Lcd.printf("status code: %d", responseCode);
-  M5.Lcd.printf("payload: %s", payload.c_str());
-}
-
-void wifi_setup() {
-  const char* ssid = get_ssid();
-  const char* passwd = get_passwd();
-  M5.Lcd.printf("ssid : %s", ssid);
-  WiFi.begin(ssid, passwd);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  M5.Lcd.printf("WiFi connected");
+  // M5.Lcd.printf("status code: %d", responseCode);
+  // M5.Lcd.printf("payload: %s", payload.c_str());
 }
 
 
@@ -72,8 +73,6 @@ void setup() {
   // Wifi初期化
   wifi_setup();
   digitalWrite(10, HIGH);
-
-  send_slack();
 }
 
 void loop() {
@@ -84,11 +83,12 @@ void loop() {
   accX = accX_g * 9.8;
   accY = accY_g * 9.8;
   accZ = accZ_g * 9.8;
-  // M5.Lcd.printf("Acc : %.2f  %.2f  %.2f   ", accX, accY, accZ);
-  // M5.Lcd.printf("Gyro : %.2f  %.2f  %.2f   ", GyroX, GyroY, GyroZ);
+  M5.Lcd.printf("Acc : %.2f  %.2f  %.2f   ", accX, accY, accZ);
+  M5.Lcd.printf("Gyro : %.2f  %.2f  %.2f   ", GyroX, GyroY, GyroZ);
 
   if (abs(accX + accY + accZ) > 19.6) {
     digitalWrite(10, LOW);
+    send_slack();
   }
   delay(500);
 }
