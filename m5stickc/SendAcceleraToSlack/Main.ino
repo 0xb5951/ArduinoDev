@@ -26,31 +26,22 @@ void send_slack() {
   
   HTTPClient http;
   String url = "https://slack.com/api/chat.postMessage";
-  String token_section = String("?token=") + oauth_token;
-  String send_channel = "&channel=t_mizushima";
-  String send_text = String("&text=") + "M5StickCからの投稿テスト";
 
-  // M5.Lcd.printf("%s%s%s%s",base_url.c_str(), token_section.c_str(), send_channel.c_str(), send_text.c_str());
-  // http.begin(base_url + token_section + send_channel + send_text);
-  // http.GET();
-  // "Authorization": "".format(os.environ["SLACK_BOT_USER_ACCESS_TOKEN"])
   const int capacity = JSON_OBJECT_SIZE(3);
   StaticJsonDocument<capacity> json_request;
   json_request["token"] = oauth_token;
   json_request["channel"] = "#t_mizushima";
   json_request["text"] = "send from m5stick";
 
-
   http.begin(url);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("Authorization", String("Bearer ") + slack_bot_token);
-  // String data = "{\"token\":" +  + ", \"channel\": , \"text\": }";
-  serializeJson(json_request, Serial);
+
   serializeJson(json_request, buffer, sizeof(buffer));
-  M5.Lcd.printf(buffer);
   unsigned int responseCode = http.POST((uint8_t*)buffer, strlen(buffer));
-  M5.Lcd.printf("status code: %d", responseCode);
   String payload = http.getString();
+
+  M5.Lcd.printf("status code: %d", responseCode);
   M5.Lcd.printf("payload: %s", payload.c_str());
 }
 
