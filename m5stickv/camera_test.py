@@ -1,13 +1,15 @@
-# Untitled - By: wik - 水 12月 18 2019
-
 import sensor
 import lcd
 
 lcd.init()
+# camera setup
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
-sensor.set_framesize(sensor.QQVGA)
+sensor.set_framesize(sensor.QVGA)
 sensor.run(1)
+
+# LCD direction controll
+lcd.direction(lcd.YX_LRUD)
 
 while 1:
     img = sensor.snapshot()
