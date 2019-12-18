@@ -24,7 +24,8 @@ def find_squad_in_picture():
     print(obj)
 
 def save_picture_to_flash(img):
-    img.save("/flash/1.bmp")    #内蔵フラッシュに保存
+    img.save("/flash/1.bmp")     #内蔵フラッシュに保存
+
 
 def save_gray_picture():
     sensor.reset()
@@ -42,8 +43,8 @@ main function
 lcd.init()
 camera_setup()
 save_gray_picture()
-img = image.Image("/flash/1.bmp")
-lcd.display(img)
+print_string()
+
 #while 1:
     #find_squad_in_picture()
     #lcd.display()
