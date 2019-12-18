@@ -26,10 +26,24 @@ def find_squad_in_picture():
 def save_picture_to_flash(img):
     img.save("/flash/1.bmp")    #内蔵フラッシュに保存
 
+def save_gray_picture():
+    sensor.reset()
+    sensor.set_pixformat(sensor.GRAYSCALE)
+    sensor.set_framesize(sensor.QQVGA)
+    lcd.direction(lcd.YX_LRUD)
+    sensor.run(1)
+
+    img = sensor.snapshot()
+    save_picture_to_flash(img)
+
 '''
 main function
 '''
 lcd.init()
 camera_setup()
-while 1:
-    find_squad_in_picture()
+save_gray_picture()
+img = image.Image("/flash/1.bmp")
+lcd.display(img)
+#while 1:
+    #find_squad_in_picture()
+    #lcd.display()
