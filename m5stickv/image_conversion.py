@@ -23,6 +23,9 @@ def find_squad_in_picture():
     # better file output
     print(obj)
 
+def save_picture_to_flash(img):
+    img.save("/flash/1.bmp")    #内蔵フラッシュに保存
+
 '''
 main function
 '''
