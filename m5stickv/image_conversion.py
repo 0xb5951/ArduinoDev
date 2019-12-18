@@ -1,12 +1,13 @@
 import lcd, sensor, image
 
 lcd.init()
-sensor.reset()
-sensor.set_pixformat(sensor.RGB565)
-sensor.set_framesize(sensor.QQVGA)
-sensor.run(1)
 
-lcd.direction(lcd.YX_LRUD)
+def camera_setup():
+    sensor.reset()
+    sensor.set_pixformat(sensor.RGB565)
+    sensor.set_framesize(sensor.QQVGA)
+    lcd.direction(lcd.YX_LRUD)
+    sensor.run(1)
 
 def print_string():
     img = sensor.snapshot()
@@ -14,5 +15,6 @@ def print_string():
     lcd.display(img)
     lcd.display(img2)
 
+camera_setup()
 while 1:
     print_string()
