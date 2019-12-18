@@ -40,10 +40,31 @@ def save_gray_picture():
 '''
 main function
 '''
-lcd.init()
-camera_setup()
-save_gray_picture()
-print_string()
+#lcd.init()
+#camera_setup()
+#save_gray_picture()
+#print_string()
+
+
+sensor.reset()
+sensor.set_framesize(sensor.QQVGA)
+sensor.set_pixformat(sensor.RGB565)
+sensor.set_hmirror(False)
+lcd.init(freq=15000000)
+lcd.direction(lcd.YX_LRUD)
+
+face_cascade = image.HaarCascade("frontalface", stages=25)
+while (True):
+    img = sensor.snapshot()
+    img.lens_corr(1.06,zoom=1.0)
+    img.draw_string(0, 0, "Looking for a face...")
+    g = img.to_grayscale(copy=True)
+    objects = g.find_features(face_cascade, threshold=0.5, scale=1.25)
+    if objects:
+        face = (objects[0][0]-31, objects[0][1]-31,objects[0][2]+31*2, objects[0][3]+31*2)
+        kpts1 = g.find_keypoints(threshold=10, scale_factor=1.1, max_keypoints=100, roi=face)
+        img.draw_rectangle(objects[0])
+    lcd.display(img)
 
 #while 1:
     #find_squad_in_picture()
