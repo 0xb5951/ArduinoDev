@@ -1,7 +1,8 @@
 import lcd, sensor, image
 
-lcd.init()
-
+'''
+function define
+'''
 def camera_setup():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
@@ -15,6 +16,17 @@ def print_string():
     lcd.display(img)
     lcd.display(img2)
 
+def find_squad_in_picture():
+    img = sensor.snapshot()
+    obj = img.find_rects()
+    lcd.display(img)
+    # better file output
+    print(obj)
+
+'''
+main function
+'''
+lcd.init()
 camera_setup()
 while 1:
-    print_string()
+    find_squad_in_picture()
