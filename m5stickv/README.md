@@ -7,3 +7,6 @@ M5stickVについているLEDを一秒おきに点滅させてみる例のやつ
 
 ### camera_test
 取得したカメラ画像をLCDに表示させるプログラム
+
+### face_recognition
+OpenMVライブラリを使って顔認識機能を実装した
