@@ -19,6 +19,3 @@ while (True):
         print(kpts1)
         img.draw_rectangle(objects[0])
     lcd.display(img)
-
-
-
