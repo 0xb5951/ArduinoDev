@@ -4,10 +4,10 @@ sensor.reset()
 sensor.set_framesize(sensor.QQVGA)
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_hmirror(False)
-lcd.init(freq=15000000)
+lcd.init(freq=30000000)
 lcd.direction(lcd.YX_LRUD)
 
-face_cascade = image.HaarCascade("frontalface", stages=25)
+face_cascade = image.HaarCascade("frontalface", stages=40)
 while (True):
     img = sensor.snapshot()
     img.draw_string(0, 0, "Looking for a face...")
