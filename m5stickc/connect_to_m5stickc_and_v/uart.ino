@@ -2,8 +2,6 @@
 #include <WiFi.h>
 #include <ssl_client.h>
 #include <WiFiClientSecure.h>
-const char* ssid = "your_ssid";
-const char* passwd = "your_passwd";
 
 HardwareSerial serial_ext(2);
 
@@ -19,7 +17,7 @@ static const uint8_t packet_begin[3] = { 0xFF, 0xD8, 0xEA };
 void setup() {
   M5.begin();
   M5.Lcd.setRotation(3);
-  M5.Lcd.setCursor(0, 30, 4);
+  M5.Lcd.setCursor(0, 30, 1);
   M5.Lcd.println("m5stick_uart_wifi_converter");
 
   setup_wifi();
@@ -45,6 +43,8 @@ void loop() {
         jpeg_data.length = (uint32_t)(rx_buffer[4] << 16) | (rx_buffer[5] << 8) | rx_buffer[6];
         int rx_size = serial_ext.readBytes(jpeg_data.buf, jpeg_data.length);
 
+        M5.Lcd.drawBitmap(50,10,64,64,jpeg_data.buf);
+
       }
     }
   }
@@ -61,6 +61,6 @@ void setup_wifi() {
     Serial.print(".");
   }
   M5.Lcd.printf("WiFi connected");
-  M5.Lcd.printf("IP address: ");
-  M5.Lcd.printf(WiFi.localIP());
+  // M5.Lcd.printf("IP address: ");
+  // M5.Lcd.printf(WiFi.localIP());
 }
