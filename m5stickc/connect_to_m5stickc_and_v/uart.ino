@@ -2,7 +2,6 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include <WiFiClientSecure.h>
 
 HardwareSerial serial_ext(2);
 
