@@ -18,14 +18,14 @@ lcd.direction(lcd.YX_LRUD)
 #M5StickV GPIO_UART
 fm.register(35, fm.fpioa.UART2_TX, force=True)
 fm.register(34, fm.fpioa.UART2_RX, force=True)
-fm.register(board_info.BUTTON_A, fm.fpioa.GPIO1, force=True)
+fm.register(board_info.BUTTON_A, fm.fpioa.GPIO5, force=True)
 
 uart_Port = UART(UART.UART2, 115200,8,0,0, timeout=1000, read_buf_len= 4096)
 
 print(board_info.pin_map())
 
 #M5StickV main button
-main_button = GPIO(GPIO.GPIO1, GPIO.IN, GPIO.PULL_UP)
+main_button = GPIO(GPIO.GPIO5, GPIO.IN, GPIO.PULL_UP)
 
 while True:
     img = sensor.snapshot()
