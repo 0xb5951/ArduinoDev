@@ -31,3 +31,18 @@ while True:
     img = sensor.snapshot()
     if main_button.value() == 0:
         lcd.display(img)
+        img_buf = img.compress(quality=70)
+        # スタートビット
+        img_size1 = (img.size()& 0xFF0000)>>16
+        img_size2 = (img.size()& 0x00FF00)>>8
+        img_size3 = (img.size()& 0x0000FF)>>0
+        data_packet = bytearray([0xFF,0xD8,0xEA,0x01,img_size1,img_size2,img_size3,0x00,0x00,0x00])
+        uart_Port.write(data_packet)
+        # 画像データ送信
+        uart_Port.write(img_buf)
+        time.sleep(1)
+
+#   Send UART End
+uart_Port.deinit()
+del uart_Port
+print("finish")
