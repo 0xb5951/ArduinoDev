@@ -52,17 +52,15 @@ void loop() {
 }
 
 void setup_wifi() {
-  // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  const char* ssid = get_ssid();
+  const char* passwd = get_passwd();
+  M5.Lcd.printf("ssid : %s", ssid);
   WiFi.begin(ssid, passwd);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  M5.Lcd.printf("WiFi connected");
+  M5.Lcd.printf("IP address: ");
+  M5.Lcd.printf(WiFi.localIP());
 }
