@@ -1,6 +1,7 @@
 #include <M5StickC.h>
 #include <WiFi.h>
-#include <ssl_client.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
 #include <WiFiClientSecure.h>
 
 HardwareSerial serial_ext(2);
@@ -37,13 +38,14 @@ void loop() {
   if (serial_ext.available()) {
     uint8_t rx_buffer[10];
     int rx_size = serial_ext.readBytes(rx_buffer, 10);
-    if (rx_size == 10) {   //packet receive of packet_begin
+    if (rx_size == 10) {
+      // スタートパケットが一致したら
       if ((rx_buffer[0] == packet_begin[0]) && (rx_buffer[1] == packet_begin[1]) && (rx_buffer[2] == packet_begin[2])) {
         //image size receive of packet_begin
         jpeg_data.length = (uint32_t)(rx_buffer[4] << 16) | (rx_buffer[5] << 8) | rx_buffer[6];
         int rx_size = serial_ext.readBytes(jpeg_data.buf, jpeg_data.length);
 
-        M5.Lcd.drawBitmap(50,10,64,64,jpeg_data.buf);
+        M5.Lcd.printf("Captured!!");
 
       }
     }
@@ -61,6 +63,4 @@ void setup_wifi() {
     Serial.print(".");
   }
   M5.Lcd.printf("WiFi connected");
-  // M5.Lcd.printf("IP address: ");
-  // M5.Lcd.printf(WiFi.localIP());
 }
