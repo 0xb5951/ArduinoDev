@@ -16,10 +16,15 @@ static const int RX_BUF_SIZE = 20000;
 static const uint8_t packet_begin[3] = { 0xFF, 0xD8, 0xEA };
 
 void setup() {
+  // Initialize the M5StickC object
   M5.begin();
-  M5.Lcd.setRotation(3);
-  M5.Lcd.setCursor(0, 30, 1);
-  M5.Lcd.println("m5stick_uart_wifi_converter");
+  // 6軸センサ初期化
+  M5.MPU6886.Init();
+  // LED初期化   
+  pinMode(10, OUTPUT);
+  
+  M5.Lcd.setRotation(1);  // ボタンBが上になる向き
+  M5.Lcd.fillScreen(BLACK);
 
   setup_wifi();
 
