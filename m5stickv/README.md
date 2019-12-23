@@ -11,7 +11,7 @@ M5stickVについているLEDを一秒おきに点滅させてみる例のやつ
 ### face_recognition
 OpenMVライブラリを使って顔認識機能を実装した
 
-### connect_to_m5stickc
+### connect_to_m5stickc&v
 M5StickCと接続して、wifi経由で接続するプログラム。
 M5StickVで撮影した写真をグレースケールでSlackに送信する。
 ボタンを押したら、写真をとってUART通信でM5StickCに画像を送信するところまでを担保
