@@ -31,8 +31,3 @@ while True:
     img = sensor.snapshot()
     if main_button.value() == 0:
         lcd.display(img)
-
-# Send UART End
-# uart_Port.deinit()
-# del uart_Port
-# print("finish")
