@@ -72,6 +72,5 @@ void send_slack(uint8_t* image_data, size_t image_sz) {
       delay(10);
     }
   }
-  
   client.stop();
 }

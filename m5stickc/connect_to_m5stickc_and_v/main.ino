@@ -1,6 +1,5 @@
 #include <M5StickC.h>
 #include <WiFi.h>
-#include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <ssl_client.h>
 #include <WiFiClientSecure.h>
@@ -15,17 +14,12 @@ typedef struct {
 jpeg_data_t jpeg_data;
 static const int RX_BUF_SIZE = 20000;
 static const uint8_t packet_begin[3] = { 0xFF, 0xD8, 0xEA };
-
-// post json
-char buffer[255];
    
 void setup() {
   // Initialize the M5StickC object
   M5.begin();
   // 6軸センサ初期化
   M5.MPU6886.Init();
-  // LED初期化   
-  pinMode(10, OUTPUT);
   
   M5.Lcd.setRotation(1);  // ボタンBが上になる向き
   M5.Lcd.fillScreen(BLACK);
@@ -47,7 +41,6 @@ void loop() {
   if (serial_ext.available()) {
     uint8_t rx_buffer[10];
     int rx_size = serial_ext.readBytes(rx_buffer, 10);
-
     if (rx_size == 10) {
       // スタートパケットが一致したら
 
@@ -63,6 +56,7 @@ void loop() {
       }
     }
   }
+  // ちょっとロックをかける
   vTaskDelay(10 / portTICK_RATE_MS);
 }
 
