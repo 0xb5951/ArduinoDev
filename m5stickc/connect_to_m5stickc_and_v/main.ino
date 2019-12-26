@@ -47,11 +47,9 @@ void loop() {
   if (serial_ext.available()) {
     uint8_t rx_buffer[10];
     int rx_size = serial_ext.readBytes(rx_buffer, 10);
-    M5.Lcd.printf("Captured_1");
 
     if (rx_size == 10) {
       // スタートパケットが一致したら
-      M5.Lcd.printf("Captured_2");
 
       if ((rx_buffer[0] == packet_begin[0]) && (rx_buffer[1] == packet_begin[1]) && (rx_buffer[2] == packet_begin[2])) {
         //image size receive of packet_begin
@@ -61,7 +59,7 @@ void loop() {
         // 画像のサイズ : jpeg_data.length
 
         send_slack(jpeg_data.buf, jpeg_data.length);
-        M5.Lcd.printf("Captured!!");
+        Serial.println("Captured!!");
       }
     }
   }
