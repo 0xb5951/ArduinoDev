@@ -2,6 +2,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <ssl_client.h>
+#include <WiFiClientSecure.h>
 
 HardwareSerial serial_ext(2);
 
@@ -16,7 +18,7 @@ static const uint8_t packet_begin[3] = { 0xFF, 0xD8, 0xEA };
 
 // post json
 char buffer[255];
-
+   
 void setup() {
   // Initialize the M5StickC object
   M5.begin();
@@ -45,24 +47,25 @@ void loop() {
   if (serial_ext.available()) {
     uint8_t rx_buffer[10];
     int rx_size = serial_ext.readBytes(rx_buffer, 10);
+    M5.Lcd.printf("Captured_1");
 
     if (rx_size == 10) {
       // スタートパケットが一致したら
+      M5.Lcd.printf("Captured_2");
+
       if ((rx_buffer[0] == packet_begin[0]) && (rx_buffer[1] == packet_begin[1]) && (rx_buffer[2] == packet_begin[2])) {
         //image size receive of packet_begin
         jpeg_data.length = (uint32_t)(rx_buffer[4] << 16) | (rx_buffer[5] << 8) | rx_buffer[6];
+        int rx_size = serial_ext.readBytes(jpeg_data.buf, jpeg_data.length);
         // 画像の中身 : jpeg_data.buf
         // 画像のサイズ : jpeg_data.length
-        send_slack(jpeg_data.buf, jpeg_data.length);
 
-        // M5.Lcd.printf("status code: %d", responseCode);
-        // M5.Lcd.printf("payload: %s", payload.c_str());
-        // Serial.printf(image_data);
-        // M5.Lcd.printf("Captured!!");
+        send_slack(jpeg_data.buf, jpeg_data.length);
+        M5.Lcd.printf("Captured!!");
       }
     }
   }
-
+  vTaskDelay(10 / portTICK_RATE_MS);
 }
 
 void setup_wifi() {
