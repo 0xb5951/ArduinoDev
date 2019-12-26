@@ -4,7 +4,6 @@ from Maix import GPIO
 from fpioa_manager import fm, board_info
 from machine import UART
 
-
 '''
 function define
 '''
@@ -44,10 +43,11 @@ while True:
         uart_Port.write(data_packet)
         # 画像データ送信
         uart_Port.write(img_buf)
+        print('send uart')
         time.sleep(1)
 
 # Send UART End
-uart_Port.deinit()
-del uart_Port
-print("finish")
+#uart_Port.deinit()
+#del uart_Port
+#print("finish")
 
