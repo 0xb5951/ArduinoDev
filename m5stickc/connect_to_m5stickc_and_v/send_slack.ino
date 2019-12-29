@@ -21,7 +21,6 @@ void send_slack(uint8_t* image_data, size_t image_sz) {
   String body = "--" + boundary + "\r\n";
   String message = "M5StickVで撮った写真だよ！";
   body += "Content-Disposition: form-data; name=\"message\"\r\n\r\n" + message + " \r\n";
-  body += "--" + boundary + "\r\n";
   body += "Content-Disposition: form-data; name=\"imageFile\"; filename=\"image.jpg\"\r\n";
   body += "Content-Type: image/jpeg\r\n\r\n";
 
@@ -36,8 +35,8 @@ void send_slack(uint8_t* image_data, size_t image_sz) {
   header += "Connection: close\r\n";
   header += "Cache-Control: no-cache\r\n";
   header += "Content-Length: " + String(body_length) + "\r\n";
-  header += "Content-Type: multipart/form-data; boundary=" + boundary + "\r\n\r\n";
-  client.print( header + body);
+  header += "Content-Type: multipart/form-data; boundary=brain_camera\r\n\r\n";
+  client.print(header + body);
   Serial.print(header + body);
 
   bool Success_h = false;
